@@ -1,0 +1,14 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MapManager.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Floatable.js" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\MapManager.cs" Line="59" Column="65" />
+      <File FileName="Assets\Scripts\GameManager.cs" Line="32" Column="11" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
