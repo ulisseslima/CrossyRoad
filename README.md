@@ -1,3 +1,3 @@
 # CrossyRoad
 
-Example of a simplified Crossy Road clone made in Unity.
+Example of a simplified Crossy Road clone with broken physics made in Unity.
