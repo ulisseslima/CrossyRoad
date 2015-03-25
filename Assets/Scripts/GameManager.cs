@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance = null;
 	public MapManager mapManager;
 
-	private List<GameObject> cars;
 	private bool doingSetup;
 	private int level = 1;
 
@@ -20,7 +19,6 @@ public class GameManager : MonoBehaviour {
 			Destroy (gameObject);
 		
 		DontDestroyOnLoad (gameObject);
-		cars = new List<GameObject> ();
 		mapManager = GetComponent<MapManager> ();
 		InitGame ();
 	}
@@ -28,7 +26,6 @@ public class GameManager : MonoBehaviour {
 	void InitGame ()
 	{
 		doingSetup = true;
-		cars.Clear ();
 		mapManager.SetupScene (level);
 		doingSetup = false;
 	}
