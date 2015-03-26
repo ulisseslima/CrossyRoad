@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+	private Vector2 touchOrigin = -Vector2.one;
 	private Rigidbody rb;
 
 	void Start () {
