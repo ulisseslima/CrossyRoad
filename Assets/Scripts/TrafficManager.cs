@@ -2,6 +2,9 @@
 using System.Collections;
 
 public class TrafficManager : MonoBehaviour {
+	public AudioSource engineSound;
+	public AudioSource crashSound;
+
 	public int rearrangeDelay = 0;
 
 	private Rigidbody rb;
@@ -15,10 +18,11 @@ public class TrafficManager : MonoBehaviour {
 	private float minOriginOffset = 20;
 	private float maxOriginOffset = 180;
 
-	private int direction;
+	[HideInInspector]
+	public int direction; // randomized
 	public float speed = 0; // randomized
-	public float minSpeed;
-	public float maxSpeed;
+	public float minSpeed; // 0.1
+	public float maxSpeed; // 0.2
 
 	void Awake() {
 		gm = GameManager.instance;
@@ -61,7 +65,7 @@ public class TrafficManager : MonoBehaviour {
 
 	private void randomizeDirection() {
 		float offset = Random.Range (minOriginOffset, maxOriginOffset);
-		direction = Random.Range (0, 1);
+		direction = Random.Range (0, 2);
 		if (direction == 0) {
 			direction = -1;
 			setOrientation (0f);
@@ -104,10 +108,14 @@ public class TrafficManager : MonoBehaviour {
 	}
 
 	private void correctOrientation() {
-		transform.rotation = Quaternion.identity;
+		if (direction == -1)
+			transform.rotation = Quaternion.identity;
+		else
+			setOrientation (180f);
 	}
 
 	void OnCollisionEnter(Collision coll) {
 		rb.isKinematic = false;
+		crashSound.Play();
 	}
 }

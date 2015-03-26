@@ -10,6 +10,7 @@ public class RespawnController : MonoBehaviour
 	public int rearrangeDelay = 0;
 	public int carsPerRoad; // 3
 	public int treesPerForest; // 5
+	public int padsPerWater; // 10
 
 	void Awake ()
 	{
@@ -27,8 +28,9 @@ public class RespawnController : MonoBehaviour
 				// Debug.Log ("new car: " + car.transform.position + ", road: " + gameObject.transform.position);
 
 				TrafficManager tm = car.GetComponentInChildren<TrafficManager> ();
-				if (speed == 0f)
+				if (speed == 0f) {
 					speed = tm.randomizeSpeed ();
+				}
 				tm.speed = speed;
 			}
 		} else if (gameObject.tag == "Grass") {
@@ -44,19 +46,41 @@ public class RespawnController : MonoBehaviour
 				tree.transform.localPosition = pos;
 				// Debug.Log ("new car: " + car.transform.position + ", road: " + gameObject.transform.position);
 			}
+		} else if (gameObject.tag == "Water") {
+			Debug.Log ("generating water pads...");
+			float speed = 0f;
+			
+			for (int i = 0; i < padsPerWater; i++) {
+				GameObject prefab = mm.platformTypes [Random.Range (0, mm.platformTypes.Length)];
+				GameObject pad = Instantiate (prefab) as GameObject;
+				pad.transform.SetParent (gameObject.transform);
+				pad.transform.localPosition = Vector3.zero;
+				// Debug.Log ("new car: " + car.transform.position + ", road: " + gameObject.transform.position);
+				
+				PlatformManager tm = pad.GetComponentInChildren<PlatformManager> ();
+				if (speed == 0f) {
+					speed = tm.randomizeSpeed ();
+				}
+				tm.speed = speed;
+			}
 		}
+
+//		scoreController = transform.parent.GetComponentInChildren<BorderController> ();
+//		if (scoreController == null) {
+//			Debug.LogWarning ("couldn't find score collider, points will not count");
+//		}
 	}
 
 	void OnBecameVisible ()
 	{
-		//Debug.Log ("seen");
+		// Debug.Log ("seen");
 		seen = true;
 	}
 
 	void OnBecameInvisible ()
 	{
-		//Debug.Log ("invisible");
-		//Debug.LogFormat ("pipe invisible ({0}) at {1}", getId (), Time.time);
+		// Debug.Log ("invisible");
+		// Debug.LogFormat ("pipe invisible ({0}) at {1}", getId (), Time.time);
 		if (seen) {
 			Invoke ("rearrange", rearrangeDelay);
 		}
@@ -64,10 +88,6 @@ public class RespawnController : MonoBehaviour
 
 	void rearrange ()
 	{
-		while (gm.mapManager.dice() <= gm.mapManager.chanceOfWater) {
-			gm.mapManager.incXgen ();
-		}
-
 		float xgen = gm.mapManager.getXgen ();
 		setX (xgen);
 
@@ -77,7 +97,7 @@ public class RespawnController : MonoBehaviour
 
 	void setX (float x)
 	{
-		//Debug.LogFormat ("pipe new x: {0} #{1} - curr x: {2}", x, getId (), currentX);
+		// Debug.LogFormat ("pipe new x: {0} #{1} - curr x: {2}", x, getId (), currentX);
 		Transform parentTransform = gameObject.GetComponentInParent<Transform> ();
 		if (parentTransform == null)
 			Debug.LogError ("parent not found");

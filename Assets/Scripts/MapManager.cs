@@ -12,11 +12,14 @@ public class MapManager : MonoBehaviour
 	public int chanceOfWater; // 30%
 	public int chanceOfRoad; // 80%
 
+	public int padsPerWater; // 10
+
 	public GameObject[] groundTypes;
 	public GameObject[] roadTypes;
 	public GameObject[] platformTypes;
 	public GameObject[] treeTypes;
 	public GameObject[] carTypes;
+	public GameObject[] waterTypes;
 
 	private List<GameObject> groundPool = new List<GameObject> ();
 	private List<GameObject> waterPool = new List<GameObject> ();
@@ -39,21 +42,24 @@ public class MapManager : MonoBehaviour
 		while (smallestCache < poolSize) {
 			int diceGround = dice();
 			int diceRoad = dice();
-			bool isWater = false;
+			int diceWater = dice();
 
 			//Debug.Log ("road dice: " + diceRoad + ", ground dice: " + diceGround);
 			if (diceRoad <= chanceOfRoad && roadPool.Count < poolSize) {
-				GameObject road = roadTypes [Random.Range (0, roadTypes.Length)];
-				GameObject instance = Instantiate (road, new Vector3 (xgen, -.5f, 0f), Quaternion.identity) as GameObject;
-				instance.transform.SetParent (mapHolder);
-				roadPool.Add (instance);
+				GameObject prefab = roadTypes [Random.Range (0, roadTypes.Length)];
+				GameObject road = Instantiate (prefab, new Vector3 (xgen, -.5f, 0f), Quaternion.identity) as GameObject;
+				road.transform.SetParent (mapHolder);
+				roadPool.Add (road);
 			} else if (diceGround <= chanceOfGround && groundPool.Count < poolSize) {
-				GameObject ground = groundTypes [Random.Range (0, groundTypes.Length)];
-				GameObject instance = Instantiate (ground, new Vector3 (xgen, 0f, 0f), Quaternion.identity) as GameObject;
-				instance.transform.SetParent (mapHolder);
-				groundPool.Add (instance);
-			} else {
-				isWater = true;
+				GameObject prefab = groundTypes [Random.Range (0, groundTypes.Length)];
+				GameObject ground = Instantiate (prefab, new Vector3 (xgen, 0f, 0f), Quaternion.identity) as GameObject;
+				ground.transform.SetParent (mapHolder);
+				groundPool.Add (ground);
+			} else /*if (diceWater <= chanceOfWater && waterPool.Count < poolSize)*/ {
+				GameObject prefab = waterTypes [Random.Range (0, waterTypes.Length)];
+				GameObject water = Instantiate (prefab, new Vector3 (xgen, 0f, 0f), Quaternion.identity) as GameObject;
+				water.transform.SetParent (mapHolder);
+				waterPool.Add (water);
 			}
 
 			cacheControl ();
